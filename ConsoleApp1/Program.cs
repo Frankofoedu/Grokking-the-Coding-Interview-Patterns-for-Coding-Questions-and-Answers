@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleApp1
 {
@@ -9,11 +11,11 @@ namespace ConsoleApp1
             Console.WriteLine("Hello World!");
 
             Console.WriteLine("Minimum sum of a subarray of size K: "
-       + findMinSubArray(7, new int[] { 2, 1, 5, 2, 8 }));
+       + FindLength("araaci", 1));
             Console.WriteLine("Minimum sum of a subarray of size K: "
-                + findMinSubArray(7, new int[] { 2, 1, 5, 2, 3, 2 }));
- Console.WriteLine("Minimum sum of a subarray of size K: "
-                + findMinSubArray(8, new int[] { 3, 4, 1, 1, 6 }));
+                + FindLength("araaci", 1));
+            Console.WriteLine("Minimum sum of a subarray of size K: "
+                + FindLength("cbbebi", 10));
 
             Console.ReadLine();
         }
@@ -34,7 +36,7 @@ namespace ConsoleApp1
         //Input: [2, 3, 4, 1, 5], k=2 
         //Output: 7
         //Explanation: Subarray with maximum sum is [3, 4].
-        public static int findMaxSumSubArray(int k, int[] arr)
+        public static int FindMaxSumSubArray(int k, int[] arr)
         {
             //first loop through k number of items to get initial sum
 
@@ -90,7 +92,7 @@ namespace ConsoleApp1
 
 
          */
-        public static int findMinSubArray(int S, int[] arr)
+        public static int FindMinSubArray(int S, int[] arr)
         {
             // TODO: Write your code here
             /*
@@ -127,6 +129,79 @@ namespace ConsoleApp1
             return length;
         }
 
+        /*
+         * Problem 3
+         * 
+         * Given a string, find the length of the longest substring in it with no more than K distinct characters.
 
+            Example 1:
+
+            Input: String="araaci", K=2
+       
+            Output: 4
+            Explanation: The longest substring with no more than '2' distinct characters is "araa".
+            Example 2:
+
+            Input: String="araaci", K=1
+            Output: 2
+            Explanation: The longest substring with no more than '1' distinct characters is "aa".
+            Example 3:
+
+            Input: String="cbbebi", K=3
+            Output: 5
+            Explanation: The longest substrings with no more than '3' distinct characters are "cbbeb" & "bbebi".
+            Example 4:
+
+            Input: String="cbbebi", K=10
+            Output: 6
+            Explanation: The longest substring with no more than '10' distinct characters is "cbbebi".
+         */
+
+        public static int FindLength(string str, int k)
+        {
+            /*
+             * loop through each character
+                * add item to dictionary 
+                * check if dictionary has maximum of k distinct characters
+                 
+             */
+
+            var dict = new Dictionary<char, int>();
+            var windowStart = 0;
+            var length = int.MinValue;
+            for (int windowEnd = 0; windowEnd < str.Length; windowEnd++)
+            {
+                if (dict.ContainsKey(str[windowEnd]))
+                {
+                    dict[str[windowEnd]]++;
+                }
+                else
+                {
+                    dict.Add(str[windowEnd], 1);
+                }
+
+                while (dict.Count > k)
+                {
+                    var val = dict[str[windowStart]];
+
+                    if (val > 1)
+                    {
+                        dict[str[windowStart]]--;
+                    }
+                    else
+                    {
+                        dict.Remove(str[windowStart]);
+                    }
+
+
+                    windowStart++;
+                }
+
+                length = Math.Max(windowEnd - windowStart + 1, length);
+
+            }
+
+            return length;
+        }
     }
 }
